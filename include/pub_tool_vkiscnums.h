@@ -64,12 +64,13 @@ extern Char* VG_(sysnum_string_extra)(Word sysnum, SizeT n_buf, Char* buf);
 #elif defined(VGO_darwin)
    // Nothing.
 
+#elif defined(VGO_dflybsd)
+   // Nothing.
+
 #else
 #  error Unknown OS
 #endif
 
 #endif   // __PUB_TOOL_VKISCNUMS_H
 
-/*--------------------------------------------------------------------*/
-/*--- end                                                          ---*/
 /*--------------------------------------------------------------------*/

@@ -255,7 +255,10 @@ case "${host_os}" in
         AC_MSG_RESULT([ok (${host_os})])
         VGCONF_OS="freebsd"
         ;;
-
+     *dragonfly*)
+        AC_MSG_RESULT([ok (${host_os})])
+        VGCONF_OS="dflybsd"
+        ;;
      *darwin*)
         AC_MSG_RESULT([ok (${host_os})])
         VGCONF_OS="darwin"
@@ -359,6 +362,16 @@ AC_SUBST(VGCONF_PLATFORM_SEC_CAPS)
 AC_MSG_CHECKING([for a supported CPU/OS combination])
 
 case "$ARCH_MAX-$VGCONF_OS" in
+     x86-dflybsd)
+        VGCONF_ARCH_PRI="x86"
+        VGCONF_ARCH_SEC=""
+	VGCONF_PLATFORM_PRI_CAPS="X86_DFLYBSD"
+	VGCONF_PLATFORM_SEC_CAPS=""
+        valt_load_address_normal="0x38000000"
+        valt_load_address_inner="0x28000000"
+        AC_MSG_RESULT([ok (${ARCH_MAX}-${VGCONF_OS})])
+	;;
+
      x86-linux)
         VGCONF_ARCH_PRI="x86"
         VGCONF_ARCH_SEC=""
@@ -619,6 +632,16 @@ AC_EGREP_CPP([DARWIN_LIBC], [
 ],
 GLIBC_VERSION="darwin")
 
+# not really a version check
+AC_EGREP_CPP([DFLYBSD_LIBC], [
+#include <sys/cdefs.h>
+#if defined(__DragonFly__)
+  DFLYBSD_LIBC
+#endif
+],
+GLIBC_VERSION="dflybsd")
+
+
 AC_MSG_CHECKING([the GLIBC_VERSION version])
 
 case "${GLIBC_VERSION}" in
@@ -710,6 +733,11 @@ case "${GLIBC_VERSION}" in
      darwin)
 	AC_MSG_RESULT(Darwin)
 	AC_DEFINE([DARWIN_LIBC], 1, [Define to 1 if you're using Darwin])
+	# DEFAULT_SUPP set by kernel version check above.
+	;;
+     dflybsd)
+	AC_MSG_RESULT(DragonFly BSD)
+	AC_DEFINE([DFLYBSD_LIBC], 1, [Define to 1 if you're using DragonFly BSD])
 	# DEFAULT_SUPP set by kernel version check above.
 	;;
 

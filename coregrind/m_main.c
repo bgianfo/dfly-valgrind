@@ -1791,7 +1791,7 @@ Int valgrind_main ( Int argc, HChar **argv, HChar **envp )
    if (!need_help) {
       VG_(debugLog)(1, "main", "Create initial image\n");
 
-#     if defined(VGO_linux) || defined(VGO_darwin)
+#     if defined(VGO_linux) || defined(VGO_darwin) || defined(VGO_dflybsd)
       the_iicii.argv              = argv;
       the_iicii.envp              = envp;
       the_iicii.toolname          = toolname;
@@ -1986,7 +1986,7 @@ Int valgrind_main ( Int argc, HChar **argv, HChar **envp )
       VG_(debugLog)(1, "main", "Wait for GDB\n");
       VG_(printf)("pid=%d, entering delay loop\n", VG_(getpid)());
 
-#     if defined(VGP_x86_linux)
+#     if defined(VGP_x86_linux) || defined(VGP_x86_dflybsd)
       iters = 5;
 #     elif defined(VGP_amd64_linux) || defined(VGP_ppc64_linux)
       iters = 10;
@@ -2111,6 +2111,29 @@ Int valgrind_main ( Int argc, HChar **argv, HChar **envp )
      // GrP fixme really?
      for (i = 0; i < n_seg_starts; i++)
         VG_(di_notify_mmap)( seg_starts[i], False/*don't allow_SkFileV*/ );
+
+     VG_(free)( seg_starts );
+   }
+# elif defined(VGO_dflybsd)
+   { Addr* seg_starts;
+     Int   n_seg_starts;
+     Addr_n_ULong anu;
+
+     seg_starts = VG_(get_segment_starts)( &n_seg_starts );
+     vg_assert(seg_starts && n_seg_starts >= 0);
+
+     /* show them all to the debug info reader.  allow_SkFileV has to
+        be True here so that we read info from the valgrind executable
+        itself. */
+     for (i = 0; i < n_seg_starts; i++) {
+        anu.ull = VG_(di_notify_mmap)( seg_starts[i], True/*allow_SkFileV*/ );
+        /* anu.ull holds the debuginfo handle returned by di_notify_mmap,
+           if any. */
+        if (anu.ull > 0) {
+           anu.a = seg_starts[i];
+           VG_(addToXA)( addr2dihandle, &anu );
+        }
+     }
 
      VG_(free)( seg_starts );
    }
@@ -3062,6 +3085,57 @@ void _start_in_C_darwin ( UWord* pArgc )
    VG_(exit)(r);
 }
 
+/*====================================================================*/
+/*=== Getting to main() alive: dflybsd                             ===*/
+/*====================================================================*/
+
+#elif defined(VGO_dflybsd)
+
+void* __memcpy_chk(void *dest, const void *src, SizeT n, SizeT n2);
+void* __memcpy_chk(void *dest, const void *src, SizeT n, SizeT n2) {
+    // skip check
+   return VG_(memcpy)(dest,src,n);
+}
+void* __memset_chk(void *s, int c, SizeT n, SizeT n2);
+void* __memset_chk(void *s, int c, SizeT n, SizeT n2) {
+    // skip check
+  return VG_(memset)(s,c,n);
+}
+void bzero(void *s, SizeT n);
+void bzero(void *s, SizeT n) {
+    VG_(memset)(s,0,n);
+}
+
+void* memcpy(void *dest, const void *src, SizeT n);
+void* memcpy(void *dest, const void *src, SizeT n) {
+   return VG_(memcpy)(dest,src,n);
+}
+void* memset(void *s, int c, SizeT n);
+void* memset(void *s, int c, SizeT n) {
+  return VG_(memset)(s,c,n);
+}
+
+/* _start in m_start-<arch>-darwin.S calls _start_in_C_darwin(). */
+
+/* Avoid compiler warnings: this fn _is_ used, but labelling it
+   'static' causes gcc to complain it isn't. */
+void _start_in_C_dflybsd( UWord* pArgc );
+void _start_in_C_dflybsd( UWord* pArgc )
+{
+   Int     r;
+   Int    argc = *(Int *)pArgc;  // not pArgc[0] on LP64
+   HChar** argv = (HChar**)&pArgc[1];
+   HChar** envp = (HChar**)&pArgc[1+argc+1];
+
+   VG_(memset)( &the_iicii, 0, sizeof(the_iicii) );
+   VG_(memset)( &the_iifii, 0, sizeof(the_iifii) );
+
+   the_iicii.sp_at_startup = (Addr)pArgc;
+
+   r = valgrind_main( (Int)argc, argv, envp );
+   /* NOTREACHED */
+   VG_(exit)(r);
+}
 
 #else
 

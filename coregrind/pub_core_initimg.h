@@ -88,7 +88,6 @@ struct _IIFinaliseImageInfo {
    UInt* client_auxv;
 };
 
-
 /* ------------------------- AIX5 ------------------------- */
 
 #elif defined(VGO_aix5)
@@ -168,6 +167,29 @@ struct _IIFinaliseImageInfo {
    UInt adler32_exp;
 };
 
+/* ------------------------- Dragonfly BSD --------------------- */
+/* XXX: double check these fields */
+#elif defined(VGO_dflybsd)
+
+struct _IICreateImageInfo {
+   /* ------ Mandatory fields ------ */
+   HChar*  toolname;
+   Addr    sp_at_startup;
+   Addr    clstack_top;
+   /* ------ Per-OS fields ------ */
+   HChar** argv;
+   HChar** envp;
+};
+
+struct _IIFinaliseImageInfo {
+   /* ------ Mandatory fields ------ */
+   SizeT clstack_max_size;
+   Addr  initial_client_SP;
+   /* ------ Per-OS fields ------ */
+   Addr  initial_client_IP;
+   Addr  initial_client_TOC;
+   UInt* client_auxv;
+}
 
 /* ------------------------- Darwin ------------------------- */
 

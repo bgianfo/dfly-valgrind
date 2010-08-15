@@ -41,11 +41,6 @@
 #include "pub_core_clientstate.h"   // VG_(fd_hard_limit)
 #include "pub_core_syscall.h"
 
-/* IMPORTANT: on Darwin it is essential to use the _nocancel versions
-   of syscalls rather than the vanilla version, if a _nocancel version
-   is available.  See docs/internals/Darwin-notes.txt for the reason
-   why. */
-
 /* ---------------------------------------------------------------------
    File stuff
    ------------------------------------------------------------------ */
@@ -88,7 +83,7 @@ Bool VG_(resolve_filename) ( Int fd, HChar* buf, Int n_buf )
    else
       return False;
 
-#  elif defined(VGO_aix5)
+#  elif defined(VGO_aix5) || defined(VGO_dflybsd) 
    I_die_here; /* maybe just return False? */
    return False;
 
@@ -110,7 +105,7 @@ Bool VG_(resolve_filename) ( Int fd, HChar* buf, Int n_buf )
 
 SysRes VG_(open) ( const Char* pathname, Int flags, Int mode )
 {  
-#  if defined(VGO_linux) || defined(VGO_aix5)
+#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGO_dflybsd)
    SysRes res = VG_(do_syscall3)(__NR_open,
                                  (UWord)pathname, flags, mode);
 #  elif defined(VGO_darwin)
@@ -125,7 +120,7 @@ SysRes VG_(open) ( const Char* pathname, Int flags, Int mode )
 void VG_(close) ( Int fd )
 {
    /* Hmm.  Return value is not checked.  That's uncool. */
-#  if defined(VGO_linux) || defined(VGO_aix5)
+#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGO_dflybsd)
    (void)VG_(do_syscall1)(__NR_close, fd);
 #  elif defined(VGO_darwin)
    (void)VG_(do_syscall1)(__NR_close_nocancel, fd);
@@ -137,7 +132,7 @@ void VG_(close) ( Int fd )
 Int VG_(read) ( Int fd, void* buf, Int count)
 {
    Int    ret;
-#  if defined(VGO_linux) || defined(VGO_aix5)
+#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGO_dflybsd)
    SysRes res = VG_(do_syscall3)(__NR_read, fd, (UWord)buf, count);
 #  elif defined(VGO_darwin)
    SysRes res = VG_(do_syscall3)(__NR_read_nocancel, fd, (UWord)buf, count);
@@ -157,7 +152,7 @@ Int VG_(read) ( Int fd, void* buf, Int count)
 Int VG_(write) ( Int fd, const void* buf, Int count)
 {
    Int    ret;
-#  if defined(VGO_linux) || defined(VGO_aix5)
+#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGO_dflybsd)
    SysRes res = VG_(do_syscall3)(__NR_write, fd, (UWord)buf, count);
 #  elif defined(VGO_darwin)
    SysRes res = VG_(do_syscall3)(__NR_write_nocancel, fd, (UWord)buf, count);
@@ -177,7 +172,7 @@ Int VG_(write) ( Int fd, const void* buf, Int count)
 
 Int VG_(pipe) ( Int fd[2] )
 {
-#  if defined(VGO_linux) || defined(VGO_aix5)
+#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGO_dflybsd)
    SysRes res = VG_(do_syscall1)(__NR_pipe, (UWord)fd);
    return sr_isError(res) ? -1 : 0;
 #  elif defined(VGO_darwin)
@@ -195,7 +190,7 @@ Int VG_(pipe) ( Int fd[2] )
 
 OffT VG_(lseek) ( Int fd, OffT offset, Int whence )
 {
-#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGP_amd64_darwin)
+#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGP_amd64_darwin) || defined(VGO_dflybsd)
    SysRes res = VG_(do_syscall3)(__NR_lseek, fd, offset, whence);
    vg_assert(sizeof(OffT) == sizeof(Word));
 #  elif defined(VGP_x86_darwin)
@@ -239,7 +234,7 @@ SysRes VG_(stat) ( const Char* file_name, struct vg_stat* vgbuf )
    SysRes res;
    VG_(memset)(vgbuf, 0, sizeof(*vgbuf));
 
-#  if defined(VGO_linux) || defined(VGO_darwin)
+#  if defined(VGO_linux) || defined(VGO_darwin) || defined(VGO_dflybsd)
    /* First try with stat64.  If that doesn't work out, fall back to
       the vanilla version. */
 #  if defined(__NR_stat64)
@@ -289,7 +284,7 @@ Int VG_(fstat) ( Int fd, struct vg_stat* vgbuf )
    SysRes res;
    VG_(memset)(vgbuf, 0, sizeof(*vgbuf));
 
-#  if defined(VGO_linux)  ||  defined(VGO_darwin)
+#  if defined(VGO_linux) || defined(VGO_darwin) || defined(VGO_dflybsd)
    /* First try with fstat64.  If that doesn't work out, fall back to
       the vanilla version. */
 #  if defined(__NR_fstat64)
@@ -343,7 +338,7 @@ SysRes VG_(dup) ( Int oldfd )
 
 SysRes VG_(dup2) ( Int oldfd, Int newfd )
 {
-#  if defined(VGO_linux)  ||  defined(VGO_darwin)
+#  if defined(VGO_linux)  ||  defined(VGO_darwin) || defined(VGO_dflybsd)
    return VG_(do_syscall2)(__NR_dup2, oldfd, newfd);
 #  elif defined(VGO_aix5)
    I_die_here;
@@ -355,7 +350,8 @@ SysRes VG_(dup2) ( Int oldfd, Int newfd )
 /* Returns -1 on error. */
 Int VG_(fcntl) ( Int fd, Int cmd, Addr arg )
 {
-#  if defined(VGO_linux) || defined(VGO_aix5)
+#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGO_dflybsd)
+
    SysRes res = VG_(do_syscall3)(__NR_fcntl, fd, cmd, arg);
 #  elif defined(VGO_darwin)
    SysRes res = VG_(do_syscall3)(__NR_fcntl_nocancel, fd, cmd, arg);
@@ -409,7 +405,7 @@ Bool VG_(record_startup_wd) ( void )
         return True;
      }
    }
-#  elif defined(VGO_aix5) || defined(VGO_darwin)
+#  elif defined(VGO_aix5) || defined(VGO_darwin) || defined(VGO_dflybsd)
    /* We can't ask the kernel, so instead rely on launcher-*.c to
       tell us the startup path.  Note the env var is keyed to the
       parent's PID, not ours, since our parent is the launcher
@@ -454,7 +450,7 @@ Int VG_(readlink) (const Char* path, Char* buf, UInt bufsiz)
 
 Int VG_(getdents) (Int fd, struct vki_dirent *dirp, UInt count)
 {
-#  if defined(VGO_linux) || defined(VGO_aix5)
+#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGO_dflybsd)
    SysRes res;
    /* res = getdents( fd, dirp, count ); */
    res = VG_(do_syscall3)(__NR_getdents, fd, (UWord)dirp, count);
@@ -572,7 +568,7 @@ Int VG_(check_executable)(/*OUT*/Bool* is_setuid,
 SysRes VG_(pread) ( Int fd, void* buf, Int count, OffT offset )
 {
    SysRes res;
-#  if defined(VGO_linux) || defined(VGO_aix5)
+#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGO_dflybsd)
    /* Linux, AIX5 */
    OffT off = VG_(lseek)( fd, offset, VKI_SEEK_SET);
    if (off < 0)
@@ -703,7 +699,7 @@ UShort VG_(ntohs) ( UShort x )
 */
 Int VG_(connect_via_socket)( UChar* str )
 {
-#  if defined(VGO_linux) || defined(VGO_darwin)
+#  if defined(VGO_linux) || defined(VGO_darwin) || defined(VGO_dflybsd)
    Int sd, res;
    struct vki_sockaddr_in servAddr;
    UInt   ip   = 0;
@@ -804,7 +800,7 @@ Int VG_(socket) ( Int domain, Int type, Int protocol )
    res = VG_(do_syscall2)(__NR_socketcall, VKI_SYS_SOCKET, (UWord)&args);
    return sr_isError(res) ? -1 : sr_Res(res);
 
-#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux)
+#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux) || defined(VGO_dflybsd)
    SysRes res;
    res = VG_(do_syscall3)(__NR_socket, domain, type, protocol );
    return sr_isError(res) ? -1 : sr_Res(res);
@@ -845,7 +841,7 @@ Int my_connect ( Int sockfd, struct vki_sockaddr_in* serv_addr, Int addrlen )
    res = VG_(do_syscall2)(__NR_socketcall, VKI_SYS_CONNECT, (UWord)&args);
    return sr_isError(res) ? -1 : sr_Res(res);
 
-#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux)
+#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux) || defined(VGO_dflybsd)
    SysRes res;
    res = VG_(do_syscall3)(__NR_connect, sockfd, (UWord)serv_addr, addrlen);
    return sr_isError(res) ? -1 : sr_Res(res);
@@ -875,6 +871,7 @@ Int VG_(write_socket)( Int sd, void *msg, Int count )
       For Darwin, VG_(socket)() sets SO_NOSIGPIPE to get EPIPE instead of 
       SIGPIPE */
 
+
 #  if defined(VGP_x86_linux) || defined(VGP_ppc32_linux) \
       || defined(VGP_ppc64_linux)
    SysRes res;
@@ -886,7 +883,8 @@ Int VG_(write_socket)( Int sd, void *msg, Int count )
    res = VG_(do_syscall2)(__NR_socketcall, VKI_SYS_SEND, (UWord)&args);
    return sr_isError(res) ? -1 : sr_Res(res);
 
-#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux)
+   // XXX: Take a look at this again, what is the best way to do this for dfly?
+#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux) || defined(VGO_dflybsd)
    SysRes res;
    res = VG_(do_syscall6)(__NR_sendto, sd, (UWord)msg, 
                                        count, VKI_MSG_NOSIGNAL, 0,0);
@@ -917,7 +915,7 @@ Int VG_(getsockname) ( Int sd, struct vki_sockaddr *name, Int *namelen)
    res = VG_(do_syscall2)(__NR_socketcall, VKI_SYS_GETSOCKNAME, (UWord)&args);
    return sr_isError(res) ? -1 : sr_Res(res);
 
-#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux)
+#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux) || defined(VGO_dflybsd)
    SysRes res;
    res = VG_(do_syscall3)( __NR_getsockname,
                            (UWord)sd, (UWord)name, (UWord)namelen );
@@ -949,7 +947,7 @@ Int VG_(getpeername) ( Int sd, struct vki_sockaddr *name, Int *namelen)
    res = VG_(do_syscall2)(__NR_socketcall, VKI_SYS_GETPEERNAME, (UWord)&args);
    return sr_isError(res) ? -1 : sr_Res(res);
 
-#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux)
+#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux) || defined(VGO_dflybsd)
    SysRes res;
    res = VG_(do_syscall3)( __NR_getpeername,
                            (UWord)sd, (UWord)name, (UWord)namelen );
@@ -984,7 +982,7 @@ Int VG_(getsockopt) ( Int sd, Int level, Int optname, void *optval,
    res = VG_(do_syscall2)(__NR_socketcall, VKI_SYS_GETSOCKOPT, (UWord)&args);
    return sr_isError(res) ? -1 : sr_Res(res);
 
-#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux)
+#  elif defined(VGP_amd64_linux) || defined(VGP_arm_linux) || defined(VGO_dflybsd)
    SysRes res;
    res = VG_(do_syscall5)( __NR_getsockopt,
                            (UWord)sd, (UWord)level, (UWord)optname, 

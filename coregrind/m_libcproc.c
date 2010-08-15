@@ -45,6 +45,8 @@
 #if defined(VGO_darwin)
 /* --- !!! --- EXTERNAL HEADERS start --- !!! --- */
 #include <mach/mach.h>   /* mach_thread_self */
+#elif defined(VGO_dflybsd)
+#include <unistd.h>   /* lwp_gettid */
 /* --- !!! --- EXTERNAL HEADERS end --- !!! --- */
 #endif
 
@@ -260,7 +262,7 @@ void VG_(env_remove_valgrind_env_stuff)(Char** envp)
 
 Int VG_(waitpid)(Int pid, Int *status, Int options)
 {
-#  if defined(VGO_linux)
+#  if defined(VGO_linux) || defined(VGO_dflybsd)
    SysRes res = VG_(do_syscall4)(__NR_wait4,
                                  pid, (UWord)status, options, 0);
    return sr_isError(res) ? -1 : sr_Res(res);
@@ -456,6 +458,11 @@ Int VG_(gettid)(void)
    // Use Mach thread ports for lwpid instead.
    return mach_thread_self();
 
+#  elif defined(VGO_dflybsd)
+   // DragonFly's  gettid syscall needs to call the 
+   // light weight process version.
+   return lwp_gettid();
+
 #  else
 #    error "Unknown OS"
 #  endif
@@ -532,7 +539,7 @@ Int VG_(getgroups)( Int size, UInt* list )
 #  elif defined(VGP_amd64_linux) || defined(VGP_ppc64_linux)  \
         || defined(VGP_arm_linux)                             \
         || defined(VGP_ppc32_aix5) || defined(VGP_ppc64_aix5) \
-        || defined(VGO_darwin)
+        || defined(VGO_darwin) || defined(VGO_dflybsd)
    SysRes sres;
    sres = VG_(do_syscall2)(__NR_getgroups, size, (Addr)list);
    if (sr_isError(sres))
@@ -563,7 +570,7 @@ Int VG_(ptrace) ( Int request, Int pid, void *addr, void *data )
 
 Int VG_(fork) ( void )
 {
-#  if defined(VGO_linux) || defined(VGO_aix5)
+#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGO_dflybsd)
    SysRes res;
    res = VG_(do_syscall0)(__NR_fork);
    if (sr_isError(res))
@@ -630,7 +637,7 @@ UInt VG_(read_millisecond_timer) ( void )
    now  = ((ULong)sec1) * 1000000ULL;
    now += (ULong)(nsec / 1000);
 
-#  elif defined(VGO_darwin)
+#  elif defined(VGO_darwin) || defined(VGO_dflybsd)
    // Weird: it seems that gettimeofday() doesn't fill in the timeval, but
    // rather returns the tv_sec as the low 32 bits of the result and the
    // tv_usec as the high 32 bits of the result.  (But the timeval cannot be

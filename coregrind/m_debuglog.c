@@ -516,6 +516,47 @@ static UInt local_sys_getpid ( void )
    return __res;
 }
 
+#elif defined(VGP_x86_dflybsd)
+
+static UInt local_sys_write_stderr ( HChar* buf, Int n )
+{
+   volatile Int block[2];
+   block[0] = (Int)buf;
+   block[1] = n;
+   __asm__ volatile (
+      "pushl %%ebx\n"           /* ebx is callee-save */
+      "movl  %0, %%ebx\n"       /* ebx = &block */
+      "pushl %%ebx\n"           /* save &block */
+      "movl  0(%%ebx), %%ecx\n" /* %ecx = buf */
+      "movl  4(%%ebx), %%edx\n" /* %edx = n */
+      "movl  $"VG_STRINGIFY(__NR_write)", %%eax\n" /* %eax = __NR_write */
+      "movl  $2, %%ebx\n"       /* %ebx = stderr */
+      "int   $0x80\n"           /* write(stderr, buf, n) */
+      "popl  %%ebx\n"           /* reestablish &block */
+      "movl  %%eax, 0(%%ebx)\n" /* block[0] = result */
+      "popl  %%ebx\n"           /* restore ebx */
+      : /*wr*/
+      : /*rd*/    "g" (block)
+      : /*trash*/ "eax", "edi", "ecx", "edx", "memory", "cc"
+   );
+   if (block[0] < 0) 
+      block[0] = -1;
+   return block[0];
+}
+
+static UInt local_sys_getpid ( void )
+{
+   UInt __res;
+   __asm__ volatile (
+      "movl $"VG_STRINGIFY(__NR_getpid)", %%eax\n" /* %eax = __NR_getpid */
+      "int  $0x80\n"       /* getpid() */
+      "movl %%eax, %0\n"   /* set __res = eax */
+      : "=mr" (__res)
+      :
+      : "eax" );
+   return __res;
+}
+
 #else
 # error Unknown platform
 #endif

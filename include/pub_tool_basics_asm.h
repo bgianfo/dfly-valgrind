@@ -54,6 +54,9 @@
 #elif defined(VGO_darwin)
 #  define VG_(str)    VGAPPEND(_vgPlain_,          str)
 #  define ML_(str)    VGAPPEND(_vgModuleLocal_,    str)
+#elif defined(VGO_dflybsd)
+#  define VG_(str)    VGAPPEND(_vgPlain_,          str)
+#  define ML_(str)    VGAPPEND(_vgModuleLocal_,    str)
 #else
 #  error Unknown OS
 #endif

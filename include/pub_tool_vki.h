@@ -53,6 +53,8 @@
 #  include "vki/vki-ppc64-aix5.h"
 #elif defined(VGO_darwin)
 #  include "vki/vki-darwin.h"
+#elif defined(VGO_dflybsd)
+#  include "vki/vki-dflybsd.h"
 #else
 #  error Unknown Plat/OS
 #endif

@@ -45,7 +45,7 @@
    Assertery.
    ------------------------------------------------------------------ */
 
-#if defined(VGP_x86_linux) || defined(VGP_x86_darwin)
+#if defined(VGP_x86_linux) || defined(VGP_x86_darwin) || defined(VGP_x86_dflybsd)
 #  define GET_STARTREGS(srP)                              \
       { UInt eip, esp, ebp;                               \
         __asm__ __volatile__(                             \
@@ -144,7 +144,7 @@ void VG_(exit)( Int status )
 {
 #if defined(VGO_linux)
    (void)VG_(do_syscall1)(__NR_exit_group, status );
-#elif defined(VGO_aix5) || defined(VGO_darwin)
+#elif defined(VGO_aix5) || defined(VGO_darwin) || defined(VGO_dflybsd)
    (void)VG_(do_syscall1)(__NR_exit, status );
 #else
 #  error Unknown OS

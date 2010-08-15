@@ -75,6 +75,11 @@
 #  undef  VG_ELF_MACHINE
 #  undef  VG_ELF_CLASS
 #  undef  VG_PLAT_USES_PPCTOC
+#elif defined(VGO_dflybsd)
+#  undef  VG_ELF_DATA2XXX
+#  undef  VG_ELF_MACHINE
+#  undef  VG_ELF_CLASS
+#  undef  VG_PLAT_USES_PPCTOC
 #else
 #  error Unknown platform
 #endif

@@ -126,7 +126,7 @@ void VG_(set_syscall_return_shadows) ( ThreadId tid,
                                        /* shadow vals for the error val */
                                        UWord s1err, UWord s2err )
 {
-#  if defined(VGP_x86_linux)
+#  if defined(VGP_x86_linux) || defined(VGP_x86_dflybsd)
    VG_(threads)[tid].arch.vex_shadow1.guest_EAX = s1res;
    VG_(threads)[tid].arch.vex_shadow2.guest_EAX = s2res;
 #  elif defined(VGP_amd64_linux)
@@ -777,7 +777,8 @@ void* VG_(fnptr_to_fnentry)( void* f )
 {
 #if defined(VGP_x86_linux) || defined(VGP_amd64_linux)  \
     || defined(VGP_arm_linux)                           \
-    || defined(VGP_ppc32_linux) || defined(VGO_darwin)
+    || defined(VGP_ppc32_linux) || defined(VGO_darwin)  \
+    || defined(VGO_dflybsd)
    return f;
 #elif defined(VGP_ppc64_linux) || defined(VGP_ppc32_aix5) \
                                || defined(VGP_ppc64_aix5)

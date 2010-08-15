@@ -115,6 +115,8 @@ typedef  Word                 PtrdiffT;   // 32             64
 typedef Word                   OffT;      // 32             64
 #elif defined(VGO_darwin)
 typedef Long                   OffT;      // 64             64
+#elif defined(VGO_dflybsd)
+typedef Long                   OffT;      // 64             64
 #else
 #  error Unknown OS
 #endif
@@ -204,6 +206,14 @@ typedef
       SysResMode _mode;
    }
    SysRes;
+#elif defined(VGO_dflybsd)
+typedef
+   struct {
+      UWord _val;
+      UWord _val2;
+      Bool  _isError;
+   }
+   SysRes;
 #else
 #  error "Unknown OS"
 #endif
@@ -271,6 +281,27 @@ static inline UWord sr_Err ( SysRes sr ) {
 static inline Bool sr_EQ ( SysRes sr1, SysRes sr2 ) {
    return sr1._mode == sr2._mode
           && sr1._wLO == sr2._wLO && sr1._wHI == sr2._wHI;
+}
+
+#elif defined(VGO_dflybsd)
+
+static inline Bool sr_isError ( SysRes sr ) {
+   return sr._isError;
+}
+static inline UWord sr_Res ( SysRes sr ) {
+   return sr._isError ? 0 : sr._val;
+}
+static inline UWord sr_ResHI ( SysRes sr ) {
+   return sr._isError ? 0 : sr._val2;
+}
+static inline UWord sr_Err ( SysRes sr ) {
+   return sr._isError ? sr._val : 0;
+}
+static inline Bool sr_EQ ( SysRes sr1, SysRes sr2 ) {
+   return sr_Res(sr1) == sr_Res(sr2) 
+          && sr_ResHI(sr1) == sr_ResHI(sr2)
+          && ((sr_isError(sr1) && sr_isError(sr2)) 
+              || (!sr_isError(sr1) && !sr_isError(sr2)));
 }
 
 #else

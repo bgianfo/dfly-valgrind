@@ -181,6 +181,8 @@
 #  define  VG_Z_LIBC_SONAME  libcZaZdaZLshrZu64ZdoZR // libc*.a(shr_64.o)
 #elif defined(VGO_darwin)
 #  define  VG_Z_LIBC_SONAME  libSystemZdZaZddylib    // libSystem.*.dylib
+#elif defined(VGO_dflybsd)
+#  define  VG_Z_LIBC_SONAME  libcZdsoZa              // libc.so*
 #else
 #  error "Unknown platform"
 #endif
@@ -203,7 +205,7 @@
 
 /* --- Soname of the pthreads library. --- */
 
-#if defined(VGO_linux) || defined(VGO_aix5)
+#if defined(VGO_linux) || defined(VGO_aix5) || defined(VGO_dflybsd)
 #  define  VG_Z_LIBPTHREAD_SONAME  libpthreadZdsoZd0     // libpthread.so.0
 #elif defined(VGO_darwin)
 #  define  VG_Z_LIBPTHREAD_SONAME  libSystemZdZaZddylib  // libSystem.*.dylib

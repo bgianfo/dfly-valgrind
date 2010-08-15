@@ -176,7 +176,7 @@ void VG_(sigcomplementset)( vki_sigset_t* dst, vki_sigset_t* src )
 */
 Int VG_(sigprocmask)( Int how, const vki_sigset_t* set, vki_sigset_t* oldset)
 {
-#  if defined(VGO_linux) || defined(VGO_aix5)
+#  if defined(VGO_linux) || defined(VGO_aix5) || defined(VGO_dflybsd)
 #  if defined(__NR_rt_sigprocmask)
    SysRes res = VG_(do_syscall4)(__NR_rt_sigprocmask, 
                                  how, (UWord)set, (UWord)oldset, 
@@ -228,8 +228,12 @@ Int VG_(sigaction) ( Int signum,
                                  signum, (UWord)act, (UWord)oldact, 
                                  _VKI_NSIG_WORDS * sizeof(UWord));
    return sr_isError(res) ? -1 : 0;
-
-#  elif defined(VGO_darwin)
+#  elif  defined(VGO_dflybsd)
+   SysRes res = VG_(do_syscall3)(__NR_sigaction, 
+                          signum, (UWord)act, (UWord)oldact);
+   return sr_isError(res) ? -1 : 0;
+ 
+#  elif defined(VGO_darwin) 
    /* If we're passing a new action to the kernel, make a copy of the
       new action, install our own sa_tramp field in it, and ignore
       whatever we were provided with.  This is OK because all the
@@ -287,7 +291,7 @@ VG_(convert_sigaction_fromK_to_toK)( vki_sigaction_fromK_t* fromK,
 {
 #  if defined(VGO_linux) || defined(VGO_aix5)
    *toK = *fromK;
-#  elif defined(VGO_darwin)
+#  elif defined(VGO_darwin) || defined(VGO_dflybsd)
    toK->ksa_handler = fromK->ksa_handler;
    toK->sa_tramp    = NULL; /* the cause of all the difficulty */
    toK->sa_mask     = fromK->sa_mask;
@@ -302,7 +306,7 @@ Int VG_(kill)( Int pid, Int signo )
 {
 #  if defined(VGO_linux) || defined(VGO_aix5)
    SysRes res = VG_(do_syscall2)(__NR_kill, pid, signo);
-#  elif defined(VGO_darwin)
+#  elif defined(VGO_darwin) || defined(VGO_dflybsd)
    SysRes res = VG_(do_syscall3)(__NR_kill,
                                  pid, signo, 1/*posix-compliant*/);
 #  else
@@ -319,6 +323,12 @@ Int VG_(tkill)( Int lwpid, Int signo )
    if (sr_isError(res) && sr_Err(res) == VKI_ENOSYS)
       res = VG_(do_syscall2)(__NR_kill, lwpid, signo);
    return sr_isError(res) ? -1 : 0;
+
+#  elif defined(VGO_dflybsd)
+   SysRes res;
+   res = VG_(do_syscall2)(SYS_lwp_kill, lwpid, signo);
+   return sr_isError(res) ? -1 : 0;
+
 
 #  elif defined(VGO_darwin)
    // Note that the __pthread_kill syscall takes a Mach thread, not a pthread.
@@ -555,6 +565,27 @@ Int VG_(sigtimedwait_zero)( const vki_sigset_t *set,
   info->si_signo = i;
 
   return i;
+}
+
+/* ---------- sigtimedwait_zero: Dragonfly BSD ----------- */
+
+#elif defined(VGO_dflybsd)
+
+static void sigtimedwait_zero_handler ( Int sig ) 
+{
+   /* XXX this is wrong -- get rid of these.  We could
+      get _any_ signal here */
+   vg_assert(sig != VKI_SIGILL);
+   vg_assert(sig != VKI_SIGSEGV);
+   vg_assert(sig != VKI_SIGBUS);
+   vg_assert(sig != VKI_SIGTRAP);
+   /* do nothing */ 
+}
+
+/* XXX: implement */
+Int VG_(sigtimedwait_zero)( const vki_sigset_t *set, vki_siginfo_t *info )
+{
+    return 0;
 }
 
 #else

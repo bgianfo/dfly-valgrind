@@ -639,8 +639,6 @@ typedef
       Iop_2xm1F64,   /* (2^arg - 1.0) */
       Iop_RoundF64toInt, /* F64 value to nearest integral value (still
                             as F64) */
-      Iop_RoundF32toInt, /* F32 value to nearest integral value (still
-                            as F32) */
 
       /* --- guest ppc32/64 specifics, not mandated by 754. --- */
 
@@ -836,7 +834,7 @@ typedef
       Iop_QSub8Sx16, Iop_QSub16Sx8, Iop_QSub32Sx4,
 
       /* MULTIPLICATION (normal / high half of signed/unsigned) */
-      Iop_Mul16x8,    Iop_Mul32x4,
+      Iop_Mul16x8,
       Iop_MulHi16Ux8, Iop_MulHi32Ux4,
       Iop_MulHi16Sx8, Iop_MulHi32Sx4,
       /* (widening signed/unsigned of even lanes, with lowest lane=zero) */
@@ -855,7 +853,7 @@ typedef
 
       /* COMPARISON */
       Iop_CmpEQ8x16,  Iop_CmpEQ16x8,  Iop_CmpEQ32x4,
-      Iop_CmpGT8Sx16, Iop_CmpGT16Sx8, Iop_CmpGT32Sx4, Iop_CmpGT64Sx2,
+      Iop_CmpGT8Sx16, Iop_CmpGT16Sx8, Iop_CmpGT32Sx4,
       Iop_CmpGT8Ux16, Iop_CmpGT16Ux8, Iop_CmpGT32Ux4,
 
       /* VECTOR x SCALAR SHIFT (shift amt :: Ity_I8) */

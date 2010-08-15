@@ -35,9 +35,15 @@
    Char functions.
    ------------------------------------------------------------------ */
 
-extern Bool VG_(isspace) ( Char c );
-extern Bool VG_(isdigit) ( Char c );
-extern Char VG_(tolower) ( Char c );
+/*
+extern Bool VG_(isspace)( Char c );
+extern Bool VG_(isdigit)( Char c );
+extern Bool VG_(tolower)( Char c );
+*/
+
+extern Bool vgPlain_isspace( Char c );
+extern Bool vgPlain_isdigit( Char c );
+extern Char vgPlain_tolower( Char c );
 
 /* ---------------------------------------------------------------------
    Converting strings to numbers

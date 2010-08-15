@@ -78,6 +78,9 @@ extern Bool VG_(aix5_register_syscall)( Int, UChar* );
 #elif defined(VGO_darwin)
    // Nothing
 
+#elif defined(VGO_dflybsd)
+   // Nothing
+
 #else
 #  error Unknown OS
 #endif
