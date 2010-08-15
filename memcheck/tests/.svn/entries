@@ -1,15 +1,15 @@
 10
 
 dir
-11152
+11267
 svn://svn.valgrind.org/valgrind/trunk/memcheck/tests
 svn://svn.valgrind.org/valgrind
 
 
 
-2010-01-08T10:51:25.384772Z
-11022
-sewardj
+2010-07-31T13:37:58.718930Z
+11248
+bart
 has-props
 
 
@@ -3605,11 +3605,11 @@ file
 
 
 
-2010-08-15T17:53:51.342156Z
-83cf302bfab4fb2e1da2161221a634fd
-2010-01-03T21:24:09.936727Z
-10999
-sewardj
+2010-08-15T18:35:16.949653Z
+1c05c738c7e0d7577c58a107f7d6bdcf
+2010-07-01T00:20:20.236166Z
+11194
+njn
 has-props
 
 
@@ -3631,7 +3631,7 @@ has-props
 
 
 
-13734
+13815
 
 malloc2.c
 file
@@ -6430,11 +6430,11 @@ file
 
 
 
-2010-08-15T17:53:51.342156Z
-9b657b1b1c8e5aad9763b064e035c638
-2007-02-09T02:37:11.088779Z
-6579
-sewardj
+2010-08-15T18:35:16.949653Z
+ac15d3769a7ec2dde1c08cf73fbd73bc
+2010-07-31T13:13:53.427082Z
+11247
+bart
 
 
 
@@ -6456,7 +6456,7 @@ sewardj
 
 
 
-21769
+11490
 
 malloc_usable.vgtest
 file
@@ -12549,6 +12549,9 @@ sewardj
 
 
 55
+
+amd64-linux
+dir
 
 manuel2.stderr.exp64
 file

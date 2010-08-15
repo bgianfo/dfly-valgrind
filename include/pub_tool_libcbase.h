@@ -35,15 +35,13 @@
    Char functions.
    ------------------------------------------------------------------ */
 
-/*
-extern Bool VG_(isspace)( Char c );
-extern Bool VG_(isdigit)( Char c );
-extern Bool VG_(tolower)( Char c );
-*/
+//extern Bool VG_(isspace)( Char c );
+//extern Bool VG_(isdigit)( Char c );
+//extern Bool VG_(tolower)( Char c );
 
-extern Bool vgPlain_isspace( Char c );
-extern Bool vgPlain_isdigit( Char c );
-extern Char vgPlain_tolower( Char c );
+//extern Bool vgPlain_isspace( Char c );
+//extern Bool vgPlain_isdigit( Char c );
+//extern Char vgPlain_tolower( Char c );
 
 /* ---------------------------------------------------------------------
    Converting strings to numbers
@@ -67,14 +65,14 @@ extern Char vgPlain_tolower( Char c );
 // useless because they don't do any error checking and so accept malformed
 // numbers and non-numbers -- eg. "123xyz" gives 123, and "foo" gives 0!
 // If you really want that behaviour, you can use "VG_(strtoll10)(str, NULL)".
-extern Long  VG_(strtoll10) ( Char* str, Char** endptr );
-extern Long  VG_(strtoll16) ( Char* str, Char** endptr );
+//extern Long  VG_(strtoll10) ( Char* str, Char** endptr );
+//extern Long  VG_(strtoll16) ( Char* str, Char** endptr );
 
 // Convert a string to a double.  After leading whitespace is ignored, a
 // '+' or '-' is allowed, and then it accepts a non-empty sequence of
 // decimal digits possibly containing a '.'.  Hexadecimal floats are not
 // accepted, nor are "fancy" floats (eg. "3.4e-5", "NAN").
-extern double VG_(strtod)  ( Char* str, Char** endptr );
+//extern double VG_(strtod)  ( Char* str, Char** endptr );
 
 /* ---------------------------------------------------------------------
    String functions and macros
@@ -86,7 +84,8 @@ extern double VG_(strtod)  ( Char* str, Char** endptr );
 #define VG_STREQN(n,s1,s2) ( (s1 != NULL && s2 != NULL \
                              && VG_(strncmp)((s1),(s2),(n))==0) ? True : False )
 
-extern SizeT VG_(strlen)         ( const Char* str );
+//extern SizeT VG_(strlen)         ( const Char* str );
+/*
 extern Char* VG_(strcat)         ( Char* dest, const Char* src );
 extern Char* VG_(strncat)        ( Char* dest, const Char* src, SizeT n );
 extern Char* VG_(strpbrk)        ( const Char* s, const Char* accpt );
@@ -102,19 +101,24 @@ extern Char* VG_(strchr)         ( const Char* s, Char c );
 extern Char* VG_(strrchr)        ( const Char* s, Char c );
 extern SizeT VG_(strspn)         ( const Char* s, const Char* accpt );
 extern SizeT VG_(strcspn)        ( const Char* s, const char* reject );
+*/
 
 /* Like strncpy(), but if 'src' is longer than 'ndest' inserts a '\0' as the
    last character. */
+/*
 extern void  VG_(strncpy_safely) ( Char* dest, const Char* src, SizeT ndest );
+*/
 
 /* ---------------------------------------------------------------------
    mem* functions
    ------------------------------------------------------------------ */
 
+/*
 extern void* VG_(memcpy) ( void *d, const void *s, SizeT sz );
 extern void* VG_(memmove)( void *d, const void *s, SizeT sz );
+*/
 extern void* VG_(memset) ( void *s, Int c, SizeT sz );
-extern Int   VG_(memcmp) ( const void* s1, const void* s2, SizeT n );
+//extern Int   VG_(memcmp) ( const void* s1, const void* s2, SizeT n );
 
 /* Zero out up to 8 words quickly in-line.  Do not use this for blocks
    of size which are unknown at compile time, since the whole point is

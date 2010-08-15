@@ -1,6 +1,6 @@
 K 10
 svn:ignore
-V 165
+V 173
 *.so
 .deps
 Makefile
@@ -11,6 +11,7 @@ cachegrind-ppc64-linux
 cachegrind-x86-darwin
 cachegrind-x86-linux
 cg_annotate
+cg_diff
 cg_merge
 
 END

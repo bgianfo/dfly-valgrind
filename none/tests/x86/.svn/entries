@@ -1,15 +1,15 @@
 10
 
 dir
-11152
+11267
 svn://svn.valgrind.org/valgrind/trunk/none/tests/x86
 svn://svn.valgrind.org/valgrind
 
 
 
-2010-05-29T18:43:43.035044Z
-11140
-bart
+2010-07-30T15:11:53.298601Z
+11246
+sewardj
 has-props
 
 
@@ -366,6 +366,40 @@ sewardj
 
 2
 
+lzcnt32.stderr.exp
+file
+
+
+
+
+2010-08-15T18:35:31.669875Z
+d41d8cd98f00b204e9800998ecf8427e
+2010-07-30T15:11:53.298601Z
+11246
+sewardj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0
+
 insn_fpu.stdout.exp
 file
 
@@ -399,6 +433,40 @@ has-props
 
 
 7045
+
+insn_sse2.def
+file
+
+
+
+
+2010-08-15T17:35:40.275697Z
+8710870be868c832d5e5e9929583c34f
+2005-11-05T01:57:02.633423Z
+5014
+sewardj
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+38901
 
 faultstatus.c
 file
@@ -501,40 +569,6 @@ has-props
 
 
 169
-
-insn_sse2.def
-file
-
-
-
-
-2010-08-15T17:35:40.275697Z
-8710870be868c832d5e5e9929583c34f
-2005-11-05T01:57:02.633423Z
-5014
-sewardj
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-38901
 
 bug132813-x86.c
 file
@@ -978,40 +1012,6 @@ has-props
 
 2
 
-fxtract.c
-file
-
-
-
-
-2010-08-15T17:35:40.275697Z
-03b9d4f3a1ef75e5c88f8ad0013ec0d9
-2009-04-15T03:12:43.771673Z
-9537
-njn
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1551
-
 insn_fpu.vgtest
 file
 
@@ -1079,6 +1079,40 @@ sewardj
 
 
 166
+
+fxtract.c
+file
+
+
+
+
+2010-08-15T17:35:40.275697Z
+03b9d4f3a1ef75e5c88f8ad0013ec0d9
+2009-04-15T03:12:43.771673Z
+9537
+njn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1551
 
 sbbmisc.vgtest
 file
@@ -1453,6 +1487,40 @@ njn
 
 
 76
+
+lzcnt32.c
+file
+
+
+
+
+2010-08-15T18:35:31.669875Z
+2b45e15c595fb8756ed90c921cba5edd
+2010-07-30T15:11:53.298601Z
+11246
+sewardj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1568
 
 bt_everything.vgtest
 file
@@ -2616,10 +2684,10 @@ file
 
 
 
-2010-08-15T17:53:51.682161Z
-d132911dc72e9c17503c6615a509a69e
-2010-05-10T20:53:28.152489Z
-11127
+2010-08-15T18:35:31.669875Z
+332c02eeb8ad0a1a633456ecdd138d63
+2010-07-30T15:11:53.298601Z
+11246
 sewardj
 has-props
 
@@ -2642,7 +2710,41 @@ has-props
 
 
 
-4440
+4579
+
+lzcnt32.stdout.exp
+file
+
+
+
+
+2010-08-15T18:35:31.669875Z
+02ac0aefbffe9e3849cf2abec29285a0
+2010-07-30T15:11:53.298601Z
+11246
+sewardj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4026
 
 bug125959-x86.stdout.exp
 file
@@ -3255,6 +3357,40 @@ has-props
 
 
 27038
+
+lzcnt32.vgtest
+file
+
+
+
+
+2010-08-15T18:35:31.669875Z
+3301badb7073a6e9743b83646b68bcf8
+2010-07-30T15:11:53.298601Z
+11246
+sewardj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+77
 
 bug125959-x86.vgtest
 file
@@ -4174,16 +4310,16 @@ has-props
 
 2
 
-bug135421-x86.c
+insn_sse3.stderr.exp
 file
 
 
 
 
 2010-08-15T17:35:40.355698Z
-5d25313277281744afeb2b3ebcdadf9f
-2006-11-18T23:00:23.732382Z
-6360
+d41d8cd98f00b204e9800998ecf8427e
+2006-08-05T12:22:52.677031Z
+5997
 sewardj
 
 
@@ -4206,7 +4342,7 @@ sewardj
 
 
 
-534
+0
 
 badseg.stdout.exp
 file
@@ -4242,16 +4378,16 @@ has-props
 
 31
 
-insn_sse3.stderr.exp
+bug135421-x86.c
 file
 
 
 
 
 2010-08-15T17:35:40.355698Z
-d41d8cd98f00b204e9800998ecf8427e
-2006-08-05T12:22:52.677031Z
-5997
+5d25313277281744afeb2b3ebcdadf9f
+2006-11-18T23:00:23.732382Z
+6360
 sewardj
 
 
@@ -4274,7 +4410,7 @@ sewardj
 
 
 
-0
+534
 
 bug137714-x86.vgtest
 file
@@ -4758,10 +4894,10 @@ file
 
 
 
-2010-08-15T17:53:51.682161Z
-95d8a5a3c86e9dba03deb0d449c909a8
-2005-10-03T01:22:29.687294Z
-4847
+2010-08-15T18:35:31.669875Z
+63bae04869f6dadc6d25a5997e360455
+2010-07-29T07:02:18.817801Z
+11235
 sewardj
 
 

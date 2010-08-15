@@ -1,7 +1,7 @@
 10
 
 dir
-2009
+2010
 svn://svn.valgrind.org/vex/trunk/test
 svn://svn.valgrind.org/vex
 
@@ -94,40 +94,6 @@ sewardj
 
 20405
 
-x87fxam.c
-file
-
-
-
-
-2010-08-15T17:35:50.915857Z
-36e30dff91ebc011217eb7c6382a3b40
-2005-03-25T22:32:39.177626Z
-1088
-sewardj
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-926
-
 fpgames.s
 file
 
@@ -161,6 +127,40 @@ sewardj
 
 
 1451
+
+x87fxam.c
+file
+
+
+
+
+2010-08-15T17:35:50.915857Z
+36e30dff91ebc011217eb7c6382a3b40
+2005-03-25T22:32:39.177626Z
+1088
+sewardj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+926
 
 fsave.c
 file
@@ -230,40 +230,6 @@ sewardj
 
 393
 
-fp1.s
-file
-
-
-
-
-2010-08-15T17:35:50.915857Z
-adcd3d77024ad95c52e814029276a5e2
-2004-08-24T22:43:26.357563Z
-203
-sewardj
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-792
-
 test-i386.c
 file
 
@@ -297,6 +263,40 @@ sewardj
 
 
 44331
+
+fp1.s
+file
+
+
+
+
+2010-08-15T17:35:50.915857Z
+adcd3d77024ad95c52e814029276a5e2
+2004-08-24T22:43:26.357563Z
+203
+sewardj
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+792
 
 test-amd64-shift.h
 file
