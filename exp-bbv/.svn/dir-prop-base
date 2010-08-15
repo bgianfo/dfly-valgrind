@@ -1,0 +1,10 @@
+K 10
+svn:ignore
+V 46
+*.dSYM
+.deps
+exp-bbv-*-*
+Makefile
+Makefile.in
+
+END

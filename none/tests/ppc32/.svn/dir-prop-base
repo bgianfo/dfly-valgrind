@@ -1,0 +1,26 @@
+K 10
+svn:ignore
+V 197
+*.stderr.diff
+*.stderr.out
+*.stdout.diff
+*.stdout.out
+.deps
+bug129390-ppc32
+bug139050-ppc32
+jm-insns
+ldstrev
+lsw
+Makefile
+Makefile.in
+mcrfs
+mftocrf
+round
+test_fx
+test_gx
+testVMX
+tw
+twi
+xlc_dbl_u32
+
+END

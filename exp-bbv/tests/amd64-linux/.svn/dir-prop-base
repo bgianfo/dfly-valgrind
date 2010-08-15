@@ -1,0 +1,22 @@
+K 10
+svn:ignore
+V 199
+*.post.diff
+*.post.out
+*.stderr.diff
+*.stderr.out
+*.stdout.diff
+*.stdout.out
+.deps
+clone_test
+clone_test.out.bb.2
+clone_test.out.pc
+complex_rep
+fldcw_check
+ll
+Makefile
+Makefile.in
+million
+rep_prefix
+
+END

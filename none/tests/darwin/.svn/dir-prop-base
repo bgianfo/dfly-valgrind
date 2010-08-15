@@ -1,0 +1,16 @@
+K 10
+svn:ignore
+V 128
+*.dSYM
+*.stderr.diff*
+*.stderr.out
+*.stdout.diff*
+*.stdout.out
+.deps
+Makefile
+Makefile.in
+access_extended
+apple-main-arg
+rlimit
+
+END

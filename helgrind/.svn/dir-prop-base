@@ -1,0 +1,20 @@
+K 10
+svn:ignore
+V 341
+*.dSYM
+.deps
+Makefile
+Makefile.in
+helgrind-amd64-linux
+helgrind-ppc32-linux
+helgrind-ppc64-linux
+helgrind-x86-darwin
+helgrind-x86-linux
+vgpreload_helgrind-amd64-linux.so
+vgpreload_helgrind-ppc32-linux.so
+vgpreload_helgrind-ppc64-linux.so
+vgpreload_helgrind-x86-darwin.so
+vgpreload_helgrind-x86-darwin.so.dSYM
+vgpreload_helgrind-x86-linux.so
+
+END

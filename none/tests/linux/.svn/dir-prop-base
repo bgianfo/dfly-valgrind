@@ -1,0 +1,13 @@
+K 10
+svn:ignore
+V 67
+*.diff*
+*.out
+.deps
+blockfault
+Makefile
+Makefile.in
+mremap
+mremap2
+
+END

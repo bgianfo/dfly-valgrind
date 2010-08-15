@@ -1,0 +1,18 @@
+K 10
+svn:ignore
+V 156
+*.post.diff
+*.post.out
+*.stderr.diff
+*.stderr.out
+*.stdout.diff
+*.stdout.out
+.deps
+clone_test
+clone_test.out.bb.2
+clone_test.out.pc
+ll
+Makefile
+Makefile.in
+
+END

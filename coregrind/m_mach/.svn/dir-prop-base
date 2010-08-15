@@ -1,0 +1,17 @@
+K 10
+svn:ignore
+V 157
+mach_vm.h
+mach_vmServer.c
+mach_vmUser.c
+task.h
+taskServer.c
+taskUser.c
+thread_act.h
+thread_actServer.c
+thread_actUser.c
+vm_map.h
+vm_mapServer.c
+vm_mapUser.c
+
+END

@@ -1,0 +1,15 @@
+K 10
+svn:ignore
+V 205
+*.dSYM
+.deps
+Makefile
+Makefile.in
+exp-ptrcheck-*-linux
+exp-ptrcheck-x86-darwin
+preen_invars
+vgpreload_exp-ptrcheck-*-linux.so
+vgpreload_exp-ptrcheck-x86-darwin.so
+vgpreload_exp-ptrcheck-x86-darwin.so.dSYM
+
+END

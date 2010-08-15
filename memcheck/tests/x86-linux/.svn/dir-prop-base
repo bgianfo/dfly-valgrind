@@ -1,0 +1,19 @@
+K 10
+svn:ignore
+V 162
+*.stderr.diff
+*.stderr.out
+*.stdout.diff
+*.stdout.out
+.deps
+bug133694
+int3-x86
+Makefile
+Makefile.in
+scalar
+scalar_exit_group
+scalar_fork
+scalar_supp
+scalar_vfork
+
+END

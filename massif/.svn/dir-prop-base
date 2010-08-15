@@ -1,0 +1,17 @@
+K 10
+svn:ignore
+V 176
+*.dSYM
+*.so
+.deps
+Makefile
+Makefile.in
+massif-amd64-linux
+massif-ppc32-linux
+massif-ppc64-linux
+massif-x86-darwin
+massif-x86-linux
+ms_print
+vgpreload_massif-x86-darwin.so.dSYM
+
+END

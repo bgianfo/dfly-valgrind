@@ -1,0 +1,17 @@
+K 10
+svn:ignore
+V 86
+*.dSYM
+.deps
+Makefile
+Makefile.in
+bigcode
+bz2
+fbench
+ffbench
+heap
+sarp
+tinycc
+vg_perf
+
+END

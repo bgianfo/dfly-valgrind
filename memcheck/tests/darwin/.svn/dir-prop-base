@@ -1,0 +1,20 @@
+K 10
+svn:ignore
+V 155
+*.dSYM
+*.stderr.diff*
+*.stderr.out
+*.stdout.diff*
+*.stdout.out
+.deps
+Makefile
+Makefile.in
+aio
+env
+pth-supp
+scalar
+scalar_fork
+scalar_nocancel
+scalar_vfork
+
+END

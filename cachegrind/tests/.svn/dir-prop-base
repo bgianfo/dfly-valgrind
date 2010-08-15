@@ -1,0 +1,20 @@
+K 10
+svn:ignore
+V 153
+*.dSYM
+*.so
+*.stderr.diff*
+*.stderr.out
+*.stdout.diff*
+*.stdout.out
+.deps
+Makefile
+Makefile.in
+cachegrind.out
+cachegrind.out.*
+chdir
+clreq
+dlclose
+wrap5
+
+END

@@ -1,0 +1,9 @@
+K 10
+svn:ignore
+V 34
+FAQ.txt
+html
+Makefile
+Makefile.in
+
+END

@@ -1,0 +1,16 @@
+K 10
+svn:ignore
+V 109
+*.dSYM
+.deps
+Makefile
+Makefile.in
+arch_test
+cputest
+os_test
+toobig-allocs
+true
+vg_regtest
+x86_amd64_features
+
+END

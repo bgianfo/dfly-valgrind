@@ -1,0 +1,13 @@
+K 10
+svn:ignore
+V 98
+*.post.diff
+*.post.out
+*.stderr.diff
+*.stderr.out
+*.stdout.diff
+*.stdout.out
+Makefile
+Makefile.in
+
+END

@@ -1,0 +1,32 @@
+K 10
+svn:ignore
+V 291
+*.dSYM
+*.stderr.diff*
+*.stderr.out
+*.stdout.diff
+*.stdout.out
+.deps
+Makefile
+Makefile.in
+bug133694
+bug152022
+espindola2
+fpeflags
+fprem
+fxsave
+int3-x86
+more_x86_fp
+pushfpopf
+pushfw_x86
+pushpopmem
+scalar
+scalar_exit_group
+scalar_fork
+scalar_supp
+scalar_vfork
+sse_memory
+tronical
+xor-undef-x86
+
+END

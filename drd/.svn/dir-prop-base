@@ -1,0 +1,21 @@
+K 10
+svn:ignore
+V 294
+*.dSYM
+.deps
+Makefile
+Makefile.in
+drd-amd64-linux
+drd-ppc32-linux
+drd-ppc64-linux
+drd-x86-darwin
+drd-x86-linux
+splash2
+vgpreload_drd-amd64-linux.so
+vgpreload_drd-ppc32-linux.so
+vgpreload_drd-ppc64-linux.so
+vgpreload_drd-x86-darwin.so
+vgpreload_drd-x86-darwin.so.dSYM
+vgpreload_drd-x86-linux.so
+
+END

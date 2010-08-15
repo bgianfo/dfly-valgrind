@@ -1,0 +1,13 @@
+K 10
+svn:ignore
+V 152
+.deps
+Makefile
+Makefile.in
+libmpiwrap-PPC32_LINUX.so
+libmpiwrap-PPC64_LINUX.so
+libmpiwrap-x86-darwin.so
+libmpiwrap-x86-darwin.so.dSYM
+valgrind-listener
+
+END
